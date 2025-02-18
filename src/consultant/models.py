@@ -2,9 +2,8 @@ import os
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from openai.types.chat import ChatCompletionMessage
-
-from .base_types import OpenAIArgs
+from .base_types import LocalArgs, OpenAIArgs
+from .formatter import format_local_response
 
 
 class DefaultModel(ABC):
@@ -61,5 +60,45 @@ class OpenAIModel(DefaultModel):
         except Exception as e:
             raise RuntimeError("Error during API call") from e
 
-    def parse_output(self, response: ChatCompletionMessage):
+    def parse_output(self, response):
         return response.content
+
+
+class LocalModel(DefaultModel):
+
+    def __init__(self, model_path: str, device: Optional[str] = "kompute"):
+        self.model_path = model_path
+        self.model_name = os.path.basename(model_path)
+        self.device = device
+
+    def setup(self):
+        try:
+            from gpt4all import GPT4All
+        except ImportError:
+            raise ImportError(
+                "Please install the gpt4all library with `pip install gpt4all`."
+            )
+
+        self.model = GPT4All(self.model_path, device=self.device)
+
+    def query(self, query: LocalArgs):
+        message = format_local_response(query.messages, self.model_name)
+        try:
+            response = self.model.generate(
+                message,
+                max_tokens=query.max_tokens,
+                temp=query.temp,
+                top_k=query.top_k,
+                min_p=query.min_p,
+                repeat_penalty=query.repeat_penalty,
+                repeat_last_n=query.repeat_last_n,
+                n_batch=query.n_batch,
+                n_predict=query.n_predict,
+                streaming=query.streaming,
+            )
+            return response
+        except Exception as e:
+            raise e
+
+    def parse_output(self, response: str):
+        return response

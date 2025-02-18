@@ -14,3 +14,16 @@ class OpenAIArgs(BaseModel):
     )
     stop: list[str] | None = Field(None, description="List of stop sequences")
     seed: Optional[int] = Field(None, description="Random seed for reproducibility")
+
+
+class LocalArgs(BaseModel):
+    messages: list[dict]
+    max_tokens: int = Field(1000, description="Maximum number of tokens")
+    temp: float = Field(0.7, description="Temperature")
+    top_k: int = Field(40, description="Top K")
+    min_p: float = Field(0.0, description="Minimum P")
+    repeat_penalty: float = Field(1.18, description="Repeat penalty")
+    repeat_last_n: int = Field(64, description="Repeat last N")
+    n_batch: int = Field(8, description="Batch size")
+    n_predict: Optional[int] = Field(None, description="Number of predictions")
+    streaming: bool = Field(False, description="Streaming")
