@@ -1,0 +1,28 @@
+{
+    "hostRequirements": {
+      "cpus": 16,
+      "memory": "32gb",
+      "storage": "128gb"
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "charliermarsh.ruff",
+          "GitHub.copilot-chat",
+          "GitHub.copilot",
+          "ms-azuretools.vscode-docker",
+          "ms-python.python",
+          "ms-python.vscode-pylance",
+          "ms-toolsai.jupyter"
+        ],
+        "settings": {
+          "python.linting.pylintEnabled": false // Removes warning in Codespace
+        }
+      }
+    },
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "postCreateCommand": "pip install -e .",
+    "remoteEnv": {
+      "PYRIGHT_PYTHON_PYLANCE_VERSION": "latest-release"
+   }
+  }
