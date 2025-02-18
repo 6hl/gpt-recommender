@@ -1,0 +1,16 @@
+[metadata]
+author = "6hl"
+author_email = "6hl@github.com"
+
+[project]
+name = "consultant"
+version = "1.0.0"
+
+dependencies = [
+    "pydantic",
+    "openai",
+    "python-dotenv"
+]
+
+[tool.setuptools.packages.find]
+where = ["src/"]
