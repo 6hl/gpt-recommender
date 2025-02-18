@@ -20,3 +20,9 @@ MODEL_MESSAGE_FORMAT_MAPPING = {
         "end": CAROT_END_TEMPLATE,
     },
 }
+
+
+# url constants
+GOOD_READS_USER_BASE = (
+    "https://www.goodreads.com/review/list/{user_id}?page={page_num}&shelf=read"
+)
