@@ -5,6 +5,8 @@ from typing import Optional
 from .base_types import LocalArgs, OpenAIArgs
 from .formatter import format_local_response
 
+# pyright: reportIncompatibleMethodOverride=false
+
 
 class DefaultModel(ABC):
 
@@ -22,9 +24,8 @@ class DefaultModel(ABC):
 
 
 class OpenAIModel(DefaultModel):
-    def __init__(
-        self, api_key: Optional[str] = None, model: Optional[str] = "gpt-4o-mini"
-    ):
+
+    def __init__(self, api_key: Optional[str] = None, model: str = "gpt-4o-mini"):
         if api_key is None:
             try:
                 api_key = os.environ["OPENAI_API_KEY"]
@@ -49,7 +50,7 @@ class OpenAIModel(DefaultModel):
         try:
             completion = self.client.chat.completions.create(
                 model=self.model,
-                messages=query.messages,
+                messages=query.messages,  # type: ignore
                 max_completion_tokens=query.max_completion_tokens,
                 temperature=query.temperature,
                 top_p=query.top_p,

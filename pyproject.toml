@@ -13,3 +13,13 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["src/"]
+
+# Add optional dependencies here
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "pyright",
+    "yamllint",
+    "black",
+]
