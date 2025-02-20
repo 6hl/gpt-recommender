@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup as bs
 
 from ..constants import GOOD_READS_USER_BASE
 
+# pyright: reportIncompatibleMethodOverride=false
+
 
 class DefaultParser(ABC):
 
@@ -60,7 +62,7 @@ class GoodReadsParser(DefaultParser):
 
         for i in range(2, n_pages + 1):
             book_reviews += GoodReadsParser._parse_reviews(
-                GoodReadsParser.request(
+                GoodReadsParser._request(
                     GOOD_READS_USER_BASE.format(user_id=user_id, page_num=i)
                 )
             )

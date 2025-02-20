@@ -17,7 +17,7 @@ class OpenAIArgs(BaseModel):
 
 
 class LocalArgs(BaseModel):
-    messages: list[dict]
+    messages: list[dict[str, str]]
     max_tokens: int = Field(1000, description="Maximum number of tokens")
     temp: float = Field(0.7, description="Temperature")
     top_k: int = Field(40, description="Top K")
