@@ -27,3 +27,9 @@ class LocalArgs(BaseModel):
     n_batch: int = Field(8, description="Batch size")
     n_predict: Optional[int] = Field(None, description="Number of predictions")
     streaming: bool = Field(False, description="Streaming")
+
+
+class WebAgentSuggestedLink(BaseModel):
+    title: str
+    link: str
+    description: str
