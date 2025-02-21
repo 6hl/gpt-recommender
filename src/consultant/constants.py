@@ -21,8 +21,12 @@ MODEL_MESSAGE_FORMAT_MAPPING = {
     },
 }
 
+MAX_PAGES_TO_SCRAPE = 5
 
 # url constants
 GOOD_READS_USER_BASE = (
     "https://www.goodreads.com/review/list/{user_id}?page={page_num}&shelf=read"
+)
+LETTERBOXD_USER_BASE = (
+    "https://letterboxd.com/{user_id}/films/by/rated-date/page/{page_num}/"
 )

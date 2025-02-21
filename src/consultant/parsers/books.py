@@ -1,19 +1,12 @@
 import math
-from abc import ABC, abstractmethod
 
 import requests
 from bs4 import BeautifulSoup as bs
 
 from ..constants import GOOD_READS_USER_BASE
+from .default import DefaultParser
 
 # pyright: reportIncompatibleMethodOverride=false
-
-
-class DefaultParser(ABC):
-
-    @abstractmethod
-    def parse(self):
-        raise NotImplementedError
 
 
 class GoodReadsParser(DefaultParser):
