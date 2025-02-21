@@ -30,3 +30,10 @@ GOOD_READS_USER_BASE = (
 LETTERBOXD_USER_BASE = (
     "https://letterboxd.com/{user_id}/films/by/rated-date/page/{page_num}/"
 )
+
+GOOGLE_SEARCH_BASE = "https://www.google.com/search"
+
+COOKIE_INFORMATION = {
+    "CONSENT": "PENDING+987",
+    "SOCS": "CAESHAgBEhIaAB",
+}
