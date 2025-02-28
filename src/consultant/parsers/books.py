@@ -1,5 +1,6 @@
 import math
 
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup as bs
 
@@ -16,6 +17,15 @@ class GoodReadsParser(DefaultParser):
         "Accept-Language": "en-US, en;q=0.5",
     }
 
+    RATING_MAP = {
+        "it was amazing": 5,
+        "really liked it": 4,
+        "liked it": 3,
+        "it was ok": 2,
+        "did not like it": 1,
+        "": None,
+    }
+
     @staticmethod
     def _parse_reviews(soup_response) -> list[dict]:
         # TODO: make parallel calls
@@ -29,7 +39,9 @@ class GoodReadsParser(DefaultParser):
                 .strip()
                 .split("\n")[0]
             )
-            rating = r.select("[class='staticStars notranslate']")[0].get_text().strip()
+            rating = GoodReadsParser._convert_rating(
+                r.select("[class='staticStars notranslate']")[0].get_text().strip()
+            )
             books_reviews.append({"title": title, "author": author, "rating": rating})
         return books_reviews
 
@@ -40,7 +52,11 @@ class GoodReadsParser(DefaultParser):
         return soup_response
 
     @staticmethod
-    def parse(user_id: str):
+    def _convert_rating(rating_str: str) -> float:
+        return GoodReadsParser.RATING_MAP.get(rating_str, None)
+
+    @staticmethod
+    def parse(user_id: str) -> pd.DataFrame:
 
         initial_request = GoodReadsParser._request(
             GOOD_READS_USER_BASE.format(user_id=user_id, page_num=1)
@@ -59,4 +75,4 @@ class GoodReadsParser(DefaultParser):
                     GOOD_READS_USER_BASE.format(user_id=user_id, page_num=i)
                 )
             )
-        return book_reviews
+        return pd.DataFrame(book_reviews)

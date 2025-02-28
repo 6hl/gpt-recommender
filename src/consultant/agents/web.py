@@ -8,8 +8,6 @@ from bs4 import BeautifulSoup, Tag
 from ..base_types import WebAgentSuggestedLink
 from ..constants import COOKIE_INFORMATION, GOOGLE_SEARCH_BASE
 
-# from urllib.parse import unquote
-
 
 class WebAgent:
 
