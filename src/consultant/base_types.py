@@ -1,5 +1,6 @@
 from typing import Optional
 
+import pandas as pd
 from pydantic import BaseModel, Field
 
 
@@ -33,3 +34,12 @@ class WebAgentSuggestedLink(BaseModel):
     title: str
     link: str
     description: str
+
+
+class Ratings(BaseModel):
+    highest: pd.DataFrame
+    lowest: pd.DataFrame
+    recent: pd.DataFrame
+
+    class Config:
+        arbitrary_types_allowed = True
