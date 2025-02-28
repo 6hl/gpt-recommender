@@ -7,8 +7,9 @@ name = "consultant"
 version = "1.0.0"
 
 dependencies = [
+    "pandas",
     "pydantic",
-    "python-dotenv"
+    "python-dotenv",
 ]
 
 [tool.setuptools.packages.find]

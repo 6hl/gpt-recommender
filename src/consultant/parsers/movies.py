@@ -1,3 +1,4 @@
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup as bs
 
@@ -37,7 +38,7 @@ class LetterboxdParser(DefaultParser):
         return sum(1 if c == "★" else 0.5 for c in rating_str)
 
     @staticmethod
-    def parse(user_id: str):
+    def parse(user_id: str) -> pd.DataFrame:
         movie_reviews = []
         for i in range(1, MAX_PAGES_TO_SCRAPE + 1):
             movie_reviews += LetterboxdParser._parse_reviews(
@@ -45,4 +46,4 @@ class LetterboxdParser(DefaultParser):
                     LETTERBOXD_USER_BASE.format(user_id=user_id, page_num=i)
                 )
             )
-        return movie_reviews
+        return pd.DataFrame(movie_reviews)
