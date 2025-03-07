@@ -48,7 +48,7 @@ USER_PREFERENCE_RECOMMEND_USER_PROMPT = """# Summary of the user's taste
 """
 
 
-def format_summarizer_user_prompt(
+def create_summarizer_user_prompt(
     recently_rated: str, highest_rated: str, lowest_rated: str
 ):
     return {
@@ -61,8 +61,8 @@ def format_summarizer_user_prompt(
     }
 
 
-def format_preference_user_prompt(
-    summary: str, rating_list: str, exclude_list: Optional[str] = ""
+def create_preference_user_prompt(
+    summary: str, rating_list: str, exclude_list: Optional[list[str]] = []
 ) -> dict:
     return {
         "role": "user",

@@ -1,7 +1,33 @@
+from enum import Enum
 from typing import Optional
 
 import pandas as pd
 from pydantic import BaseModel, Field
+
+
+class ComparableEnum(Enum):
+    """
+    Base class to derive from for enums that can be compared to strings
+    """
+
+    def __str__(self):
+        return self.value
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, str):
+            return self.value == other
+        elif isinstance(other, ComparableEnum):
+            return self.value == other.value
+        return False
+
+    def __hash__(self) -> int:
+        return hash(self.value)
+
+
+class RecommendType(ComparableEnum):
+    BOOKS = "books"
+    MOVIES = "movies"
+    GENERAL = "general"
 
 
 class OpenAIArgs(BaseModel):
@@ -40,6 +66,15 @@ class Ratings(BaseModel):
     highest: pd.DataFrame
     lowest: pd.DataFrame
     recent: pd.DataFrame
+
+    class Config:
+        arbitrary_types_allowed = True
+
+
+class Preference(BaseModel):
+    summary: str = ""
+    ratings: Optional[Ratings] = None
+    exclude_list: list[str] = []
 
     class Config:
         arbitrary_types_allowed = True
