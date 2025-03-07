@@ -20,7 +20,7 @@ class FilterRatings:
             review_df=review_df, n_samples=n_samples
         )
         lowest_ratings = FilterRatings.get_lowest_ratings(
-            review_df=review_df[~review_df.title.isin(highest_ratings.title)],
+            review_df=review_df[~review_df.title.isin(highest_ratings.title)],  # type: ignore
             n_samples=n_samples,
         )
         most_recent = FilterRatings.get_most_recent(
