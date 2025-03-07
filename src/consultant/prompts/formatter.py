@@ -3,7 +3,11 @@ from .books import (
     create_book_recommend_system_prompt,
     create_book_summarizer_system_prompt,
 )
-from .general import create_preference_user_prompt, create_summarizer_user_prompt
+from .general import (
+    WEB_SEARCH_SUMMARIZER_SYSTEM_PROMPT,
+    create_preference_user_prompt,
+    create_summarizer_user_prompt,
+)
 from .movies import (
     create_film_recommend_system_prompt,
     create_film_summarizer_system_prompt,
@@ -43,4 +47,24 @@ def create_recommend_messages(
             preference.ratings.recent.to_markdown(),  # type: ignore
             preference.exclude_list,
         ),
+    ]
+
+
+def create_web_search_messages(query_results: list[str], n_recommendations: int = 5):
+    return [
+        {
+            "role": "system",
+            "content": WEB_SEARCH_SUMMARIZER_SYSTEM_PROMPT.format(
+                n_recommendations=n_recommendations
+            ),
+        },
+        {
+            "role": "user",
+            "content": "\n".join(
+                [
+                    f"# Source {n}\n{res}\n"
+                    for n, res in enumerate(query_results, start=1)
+                ]
+            ),
+        },
     ]

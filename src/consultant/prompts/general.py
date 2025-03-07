@@ -48,6 +48,9 @@ USER_PREFERENCE_RECOMMEND_USER_PROMPT = """# Summary of the user's taste
 """
 
 
+WEB_SEARCH_SUMMARIZER_SYSTEM_PROMPT = """You are a helpful assistant that summarizes web results. Select {n_recommendations} recommendations from the results as a numbered list."""
+
+
 def create_summarizer_user_prompt(
     recently_rated: str, highest_rated: str, lowest_rated: str
 ):
