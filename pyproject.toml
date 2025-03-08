@@ -10,6 +10,7 @@ dependencies = [
     "pandas",
     "pydantic",
     "python-dotenv",
+    "tabulate",
 ]
 
 [tool.setuptools.packages.find]
