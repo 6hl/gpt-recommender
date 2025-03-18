@@ -173,3 +173,4 @@ cython_debug/
 *ipynb
 .consultant_cache/
 .DS_Store
+logs/
