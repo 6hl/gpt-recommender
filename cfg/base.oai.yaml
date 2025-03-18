@@ -1,0 +1,7 @@
+model:
+  type: openai
+recommender:
+  web_search: true
+  n_recommendations: 5
+performance:
+  cache: true

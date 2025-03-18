@@ -18,6 +18,8 @@ class Consultant:
 
     def __init__(self, config_path: Optional[str] = None):
         self.config = load_config(config_path)
+        self.config_path = config_path
+        # TODO: add cache checks
         self.cache = Cache(bypass=(not self.config.performance.cache))
         self.model = self._load_model(self.config.model)
 
@@ -38,13 +40,11 @@ class Consultant:
             and not self.config.recommender.type == "general"
             and not skip_profile_recommendations
         ):
-            # Give profile-based recommendations
             recommendations.profile = self._profile_recommendations()
 
         return recommendations
 
     def _load_model(self, model_args) -> LocalModel | OpenAIModel:
-        # Load the model based on the provided arguments
         if model_args.type == "local":
             model = LocalModel(model_args.path, model_args.device)
         elif model_args.type == "openai":
@@ -57,7 +57,6 @@ class Consultant:
     def _create_model_args(
         self, messages: list[dict], **kwargs
     ) -> OpenAIArgs | LocalArgs:
-        # Create model arguments based on the query type
         if self.config.model.type == ModelType.OPENAI:
             return OpenAIArgs(
                 messages=messages,
@@ -110,3 +109,36 @@ class Consultant:
         recommendations = self._query_model(messages)
         logging.debug(f"Recommendations: {recommendations}")
         return recommendations
+
+    def update_config(
+        self,
+        config: dict[str, str] | str,
+        reset: bool = False,
+    ) -> None:
+        if reset:
+            self.config = load_config(self.config.config_path)
+            self.cache = Cache(bypass=(not self.config.performance.cache))
+            self.model = self._load_model(self.config.model)
+            return
+
+        initial_model_args = (
+            self.config.model.type,
+            self.config.model.path,
+            self.config.model.device,
+            self.config.model.api_key,
+        )
+        for key, value in config.items():
+            if hasattr(self.config, key):
+                setattr(self.config, key, value)
+            else:
+                logging.error(f"Invalid config key: {key}")
+        self.cache = Cache(bypass=(not self.config.performance.cache))
+
+        # prevent reloading the model if it is not changed
+        if initial_model_args != (
+            self.config.model.type,
+            self.config.model.path,
+            self.config.model.device,
+            self.config.model.api_key,
+        ):
+            self.model = self._load_model(self.config.model)
