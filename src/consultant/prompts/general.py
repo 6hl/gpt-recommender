@@ -34,7 +34,7 @@ You will be provided the following:
 - A list of {category} to exclude from recommending.
 
 You will respond by giving a numbered list of recommendations for the user based off of their preferences.
-Do not add commentary and only respond with a numbered list of {n_recommendations} recommendations."""
+Do not add commentary. Do not describe the recommendations. Only respond with a numbered list of {n_recommendations} recommendations."""
 
 
 USER_PREFERENCE_RECOMMEND_USER_PROMPT = """# Summary of the user's taste
@@ -48,7 +48,7 @@ USER_PREFERENCE_RECOMMEND_USER_PROMPT = """# Summary of the user's taste
 """
 
 
-WEB_SEARCH_SUMMARIZER_SYSTEM_PROMPT = """You are a helpful assistant that summarizes web results. Select {n_recommendations} recommendations from the results as a numbered list."""
+WEB_SEARCH_SUMMARIZER_SYSTEM_PROMPT = """You are a helpful assistant that summarizes web results. Select {n_recommendations} recommendations from the results as a numbered list. Respond with only {n_recommendations} recommendations. Do not add descriptions or commentary."""
 
 
 def create_summarizer_user_prompt(

@@ -61,13 +61,13 @@ class OpenAIModel(DefaultModel):
         except Exception as e:
             raise RuntimeError("Error during API call") from e
 
-    def parse_output(self, response):
+    def parse_output(self, response) -> str:
         return response.content
 
 
 class LocalModel(DefaultModel):
 
-    def __init__(self, model_path: str, device: Optional[str] = "kompute"):
+    def __init__(self, model_path: str, device: Optional[str] = "cpu"):
         self.model_path = model_path
         self.model_name = os.path.basename(model_path)
         self.device = device
@@ -101,5 +101,5 @@ class LocalModel(DefaultModel):
         except Exception as e:
             raise e
 
-    def parse_output(self, response: str):
+    def parse_output(self, response: str) -> str:
         return response
