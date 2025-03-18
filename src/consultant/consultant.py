@@ -48,7 +48,7 @@ class Consultant:
         if model_args.type == "local":
             model = LocalModel(model_args.path, model_args.device)
         elif model_args.type == "openai":
-            model = OpenAIModel(model_args.api_key, model_args.path)
+            model = OpenAIModel(model_args.api_key)
         else:
             raise ValueError(f"Unsupported model type: {model_args.type}")
         model.setup()
@@ -66,7 +66,7 @@ class Consultant:
         else:
             return LocalArgs(messages=messages, **kwargs)
 
-    def query_model(
+    def _query_model(
         self,
         messages: list[dict],
     ) -> str:
@@ -81,7 +81,7 @@ class Consultant:
         logging.debug(f"Web search sources: {sources}")
         texts = [WebAgent.get_raw_document_body_from_link(source) for source in sources]
         messages = create_web_search_messages(texts)
-        response = self.query_model(messages)
+        response = self._query_model(messages)
         logging.debug(f"Web search response: {response}")
         return response
 
@@ -98,7 +98,7 @@ class Consultant:
         ratings = FilterRatings.collate_ratings(reviews)
         logging.debug(f"Filtered ratings: {ratings}")
         messages = create_summarizer_messages(rec_type, ratings)
-        summary = self.query_model(messages)
+        summary = self._query_model(messages)
         logging.debug(f"Summary: {summary}")
 
         preference = Preference(
@@ -107,6 +107,6 @@ class Consultant:
             exclude_list=exclude_list,
         )
         messages = create_recommend_messages(rec_type, preference)
-        recommendations = self.query_model(messages)
+        recommendations = self._query_model(messages)
         logging.debug(f"Recommendations: {recommendations}")
         return recommendations
