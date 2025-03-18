@@ -30,6 +30,11 @@ class RecommendType(ComparableEnum):
     GENERAL = "general"
 
 
+class ModelType(ComparableEnum):
+    OPENAI = "openai"
+    LOCAL = "local"
+
+
 class OpenAIArgs(BaseModel):
     messages: list[dict]
     max_completion_tokens: int = Field(
@@ -78,3 +83,44 @@ class Preference(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True
+
+
+class ModelArgs(BaseModel):
+    type: ModelType = Field(default=ModelType.LOCAL)
+    path: str = Field(default="Phi-3-mini-4k-instruct.Q4_0.gguf")
+    device: str = Field(default="cpu")
+    api_key: Optional[str] = Field(
+        default=None, description="API key for OpenAI or other services"
+    )
+
+
+class RecommenderArgs(BaseModel):
+    type: RecommendType = Field(
+        default=RecommendType.GENERAL,
+        description="Type of recommendation (books, movies, general)",
+    )
+    web_search: bool = Field(
+        default=True, description="Enable web search for recommendations"
+    )
+    n_recommendations: int = Field(
+        default=5, description="Number of recommendations to return"
+    )
+    profile: Optional[str] = Field(
+        default=None,
+        description="User profile for personalized recommendations",
+    )
+
+
+class PerformanceArgs(BaseModel):
+    cache: bool = Field(default=True, description="Enable caching for performance")
+
+
+class Config(BaseModel):
+    model: ModelArgs
+    recommender: RecommenderArgs
+    performance: PerformanceArgs
+
+
+class Recommendations(BaseModel):
+    web: Optional[str] = None
+    profile: Optional[str] = None

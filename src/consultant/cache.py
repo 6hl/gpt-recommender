@@ -6,7 +6,7 @@ from typing import Any, Optional
 
 class Cache:
 
-    def __init__(self, dir: Optional[str] = None):
+    def __init__(self, dir: Optional[str] = None, bypass: bool = False):
         if dir is None:
             dir = os.path.join(os.getcwd(), ".consultant_cache")
 
@@ -19,11 +19,12 @@ class Cache:
         self.map_path = os.path.join(dir, "mapping.json")
 
         self._cache_map = self._load_cache_map()
+        self.bypass = bypass
 
     def __call__(
         self, key: str, value: Optional[Any] = None, bypass: bool = False
     ) -> Any | None:
-        if bypass:
+        if bypass or self.bypass:
             return None
 
         if value is not None:

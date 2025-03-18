@@ -1,3 +1,5 @@
+MAX_USER_INPUT_LENGTH = 2048 * 2
+
 CAROT_SYSTEM = """<|system|>
 {system_prompt}<|end|>"""
 

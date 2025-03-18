@@ -1,4 +1,5 @@
 from ..base_types import Preference, Ratings, RecommendType
+from ..constants import MAX_USER_INPUT_LENGTH
 from .books import (
     create_book_recommend_system_prompt,
     create_book_summarizer_system_prompt,
@@ -60,11 +61,13 @@ def create_web_search_messages(query_results: list[str], n_recommendations: int 
         },
         {
             "role": "user",
-            "content": "\n".join(
-                [
-                    f"# Source {n}\n{res}\n"
-                    for n, res in enumerate(query_results, start=1)
-                ]
+            "content": (
+                "\n".join(
+                    [
+                        f"# Source {n}\n{res}\n"
+                        for n, res in enumerate(query_results, start=1)
+                    ]
+                )[:MAX_USER_INPUT_LENGTH]
             ),
         },
     ]

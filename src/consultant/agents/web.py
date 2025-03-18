@@ -1,3 +1,4 @@
+import logging
 import random
 import urllib.parse as parse
 from typing import Optional
@@ -20,6 +21,8 @@ class WebAgent:
         """
         params = WebAgent.get_params(text, num_requested_results)
         resp = WebAgent._request(params=params)
+        if resp is None:
+            return []
         soup = BeautifulSoup(resp.text, "html.parser")
         result_block = soup.find_all("div", class_="ezO2md")
         links = []
@@ -52,6 +55,8 @@ class WebAgent:
         """
         # TODO: determine if there is a universal way to cleanup raw results
         resp = WebAgent._request(url=link.link)
+        if resp is None:
+            return ""
         soup = BeautifulSoup(resp.text, "html.parser")
         body = soup.find("body")
         if body is None:
@@ -64,18 +69,22 @@ class WebAgent:
         url: str = GOOGLE_SEARCH_BASE,
         params: Optional[dict] = None,
         proxies: Optional[dict] = None,
-        timeout: int = 5,
-    ) -> requests.Response:
-        resp = requests.get(
-            url=url,
-            headers=WebAgent._get_header(),
-            params=params,
-            proxies=proxies,
-            timeout=timeout,
-            verify=None,
-            cookies=COOKIE_INFORMATION,
-        )
-        return resp
+        timeout: int = 10,
+    ) -> Optional[requests.Response]:
+        try:
+            resp = requests.get(
+                url=url,
+                headers=WebAgent._get_header(),
+                params=params,
+                proxies=proxies,
+                timeout=timeout,
+                verify=None,
+                cookies=COOKIE_INFORMATION,
+            )
+            return resp
+        except requests.RequestException as e:
+            logging.error(f"Request failed: {e}")
+            return None
 
     @staticmethod
     def _generate_useragent() -> str:
