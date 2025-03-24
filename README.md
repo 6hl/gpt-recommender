@@ -2,12 +2,6 @@
 
 GPT Recommender is a project designed to provide intelligent recommendations using OpenAI's GPT models or locally runnable LLMs. This repository contains the code and resources necessary to build and run a recommendation system powered by GPT.
 
-## Features
-
-- **Intelligent Recommendations**: Leverages advanced GPT models to provide context-aware and accurate suggestions based on user input.
-- **Customizable Logic**: Easily adapt the recommendation engine to suit your specific use case with configurable parameters and modular design.
-- **Modular design**: Designed for effortless integration with containerization process.
-
 ## Usage
 
 ### Server
